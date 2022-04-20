@@ -13,6 +13,13 @@ async function seedUsers() {
             password: anyHashed
         }
     ).save()
+    new User({
+            firstName: "another",
+            lastName: "lastName",
+            email: "another@another.com",
+            password: anyHashed
+        }
+    ).save()
 }
 
 module.exports = {seedUsers}
