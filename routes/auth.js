@@ -4,7 +4,7 @@ const bcrypt = require("bcrypt")
 const joi = require("joi")
 
 authRouter.post("/", async (req, res) => {
-    // #swagger.tags = ["auth"]
+    // #swagger.tags = ["Auth"]
     // #swagger.summary = "Login user"
     try {
         const {error} = validate(req.body);

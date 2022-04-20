@@ -6,7 +6,7 @@ const {authenticate} = require("../middleware/authenticate");
 // TODO: test the shit out of this router
 
 router.get('/', (req, res) => {
-    // #swagger.tags = ["product"]
+    // #swagger.tags = ["Product"]
     // #swagger.summary = "Get all products"
     Product.find({}).sort('productName').exec((err, products) => {
         if (err) {
@@ -19,7 +19,7 @@ router.get('/', (req, res) => {
 })
 
 router.get('/:id', (req, res) => {
-    // #swagger.tags = ["product"]
+    // #swagger.tags = ["Product"]
     // #swagger.summary = "Get product by id"
     Product.findById(req.params.id, (err, product) => {
         if (err) {
@@ -36,7 +36,7 @@ router.get('/:id', (req, res) => {
 })
 
 router.patch('/:id', authenticate, (req, res) => {
-    // #swagger.tags = ["product"]
+    // #swagger.tags = ["Product"]
     // #swagger.summary = "Update product by id"
     // #swagger.parameters["body"] = {in: "body", schema: {productName: "any", categoryId: "any", unitPrice: "any", isDiscounted: "any", isDiscontinued: "any", discountedUnitPrice: "any", properties: "any", imagePath: "any", quantity: "any"}}
     Product.findByIdAndUpdate(req.params.id, req.body, (err, product) => {

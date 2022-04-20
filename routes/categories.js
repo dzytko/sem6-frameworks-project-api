@@ -3,9 +3,9 @@ const router = express.Router();
 const {Category} = require('../models/category');
 
 router.get('/', async (req, res) => {
-    // #swagger.parameters['parent-id'] = {in: 'query'}
+    // #swagger.tags = ["Category"]
     // #swagger.summary = 'Get all categories optionally filtered by parent id'
-    // #swagger.tags = ["category"]
+    // #swagger.parameters['parent-id'] = {in: 'query'}
     let filters = {};
     if (req.query['parent-id']) {
         filters = {parentId: req.query['parent-id']};
@@ -21,7 +21,7 @@ router.get('/', async (req, res) => {
 });
 
 router.get('/:id', async (req, res) => {
-    // #swagger.tags = ["category"]
+    // #swagger.tags = ["Category"]
     // #swagger.summary = 'Get category by id'
     Category.findById(req.params.id, (err, category) => {
         if (err) {

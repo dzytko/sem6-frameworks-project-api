@@ -21,7 +21,7 @@
     "/api/user/": {
       "get": {
         "tags": [
-          "user"
+          "User"
         ],
         "summary": "Get all users",
         "description": "",
@@ -45,7 +45,7 @@
       },
       "post": {
         "tags": [
-          "user"
+          "User"
         ],
         "summary": "Create new user",
         "description": "",
@@ -91,7 +91,7 @@
     "/api/user/{id}": {
       "delete": {
         "tags": [
-          "user"
+          "User"
         ],
         "summary": "Delete user",
         "description": "",
@@ -124,7 +124,7 @@
     "/api/auth/": {
       "post": {
         "tags": [
-          "auth"
+          "Auth"
         ],
         "summary": "Login user",
         "description": "",
@@ -164,7 +164,7 @@
     "/api/product/": {
       "get": {
         "tags": [
-          "product"
+          "Product"
         ],
         "summary": "Get all products",
         "description": "",
@@ -182,7 +182,7 @@
     "/api/product/{id}": {
       "get": {
         "tags": [
-          "product"
+          "Product"
         ],
         "summary": "Get product by id",
         "description": "",
@@ -208,7 +208,7 @@
       },
       "patch": {
         "tags": [
-          "product"
+          "Product"
         ],
         "summary": "Update product by id",
         "description": "",
@@ -289,7 +289,7 @@
     "/api/category/": {
       "get": {
         "tags": [
-          "category"
+          "Category"
         ],
         "summary": "Get all categories optionally filtered by parent id",
         "description": "",
@@ -313,7 +313,7 @@
     "/api/category/{id}": {
       "get": {
         "tags": [
-          "category"
+          "Category"
         ],
         "summary": "Get category by id",
         "description": "",
@@ -336,6 +336,68 @@
             "description": "Internal Server Error"
           }
         }
+      }
+    },
+    "/api/cart/": {
+      "get": {
+        "tags": [
+          "Cart"
+        ],
+        "summary": "Get all products",
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      },
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "productId": {
+                  "example": "any"
+                },
+                "quantity": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
       }
     }
   }
