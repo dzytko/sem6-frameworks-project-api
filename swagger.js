@@ -10,6 +10,13 @@ const config = {
         description: 'Shop API Documentation',
         version: '1.0.0'
     },
+    securityDefinitions: {
+        bearerAuth: {
+            type: 'apiKey',
+            name: 'Authorization',
+            in: 'header'
+        }
+    }
 }
 
 swaggerAutogen(outputFile, endpointsFiles, config);

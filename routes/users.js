@@ -5,6 +5,8 @@ const {User, validateUser} = require("../models/user")
 const {authenticate} = require("../middleware/authenticate");
 
 router.get('/', authenticate, (req, res) => {
+    // #swagger.tags = ["user"]
+    // #swagger.summary = "Get all users"
     User.find({}, (err, users) => {
         if (err) {
             console.log(err)
@@ -16,6 +18,8 @@ router.get('/', authenticate, (req, res) => {
 });
 
 router.post('/', async (req, res) => {
+    // #swagger.tags = ["user"]
+    // #swagger.summary = "Create new user"
     try {
         const {error} = validateUser(req.body)
         if (error){
@@ -43,6 +47,8 @@ router.post('/', async (req, res) => {
 })
 
 router.delete('/:id', authenticate, (req, res) => {
+    // #swagger.tags = ["user"]
+    // #swagger.summary = "Delete user"
     User.findByIdAndDelete(req.params.id, (err, user) => {
         if (err) {
             console.log(err)

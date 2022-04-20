@@ -1,20 +1,23 @@
 const jwt = require("jsonwebtoken")
 
 const authenticate = (req, res, next) => {
-    if (!req.headers.authorization) {
+    // #swagger.security = [{bearerAuth: []}]
+    const authorizationString = "authorization" // dirty hack to stop swagger from showing this parameter
+    const authentication = req.headers[authorizationString]
+
+    if (!authentication) {
         res.status(401).json({message: 'No token provided'})
         return
     }
-    if (req.headers.authorization.split(' ')[0] !== 'Bearer') {
+    if (authentication.split(' ')[0].toLowerCase() !== 'bearer') {
         res.status(401).json({message: 'Invalid token'})
         return
     }
-    const token = req.headers.authorization.split(' ')[1]
+    const token = authentication.split(' ')[1]
+
     jwt.verify(token, process.env.JWT_PRIVATE_KEY, (err, decoded) => {
         if (err) {
-            console.log(process.env.JWT_PRIVATE_KEY)
             console.log(err)
-            console.log(req.headers.authorization)
             res.status(401).json({message: 'Invalid token'});
             return
         }
@@ -22,6 +25,5 @@ const authenticate = (req, res, next) => {
         next();
     }, null);
 }
-
 
 module.exports = {authenticate: authenticate}
