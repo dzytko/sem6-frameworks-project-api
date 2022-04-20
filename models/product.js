@@ -2,7 +2,7 @@ const mongoose = require("mongoose")
 
 const productSchema = new mongoose.Schema({
     productName: {type: String, required: true, unique: true},
-    categoryId: {type: mongoose.Schema.Types.ObjectId, required: true}, // TODO add ref
+    categoryId: {type: mongoose.Schema.Types.ObjectId, ref: "Category", required: true},
     unitPrice: {type: Number, required: true},
     isDiscounted: {type: Boolean, required: true},
     isDiscontinued: {type: Boolean, required: true},

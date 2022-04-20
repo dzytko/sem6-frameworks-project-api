@@ -10,6 +10,7 @@ connection()
 const usersRouter = require('./routes/users');
 const authRouter = require('./routes/auth');
 const productsRouter = require('./routes/products');
+const categoryRouter = require('./routes/categories');
 
 const app = express();
 
@@ -26,5 +27,6 @@ app.use('/doc', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use('/api/user', usersRouter);
 app.use('/api/auth', authRouter);
 app.use('/api/product', productsRouter);
+app.use('/api/category', categoryRouter);
 
 module.exports = app;
