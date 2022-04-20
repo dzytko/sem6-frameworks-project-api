@@ -11,22 +11,23 @@ const usersRouter = require('./routes/users');
 const authRouter = require('./routes/auth');
 const productsRouter = require('./routes/products');
 const categoryRouter = require('./routes/categories');
+const cartRouter = require('./routes/cart');
 
 const app = express();
 
 if (process.env.NODE_ENV === 'development') {
     seedDb().then()
+    app.use('/doc', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 }
 
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({extended: false}));
 
-app.use('/doc', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
-
 app.use('/api/user', usersRouter);
 app.use('/api/auth', authRouter);
 app.use('/api/product', productsRouter);
 app.use('/api/category', categoryRouter);
+app.use('/api/cart', cartRouter);
 
 module.exports = app;

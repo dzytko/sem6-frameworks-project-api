@@ -136,9 +136,11 @@
               "type": "object",
               "properties": {
                 "email": {
-                  "example": "any"
+                  "type": "string",
+                  "example": "a@a.com"
                 },
                 "password": {
+                  "type": "string",
                   "example": "any"
                 }
               }
@@ -343,7 +345,7 @@
         "tags": [
           "Cart"
         ],
-        "summary": "Get all products",
+        "summary": "Get all cart items",
         "description": "",
         "parameters": [],
         "responses": {
@@ -364,6 +366,10 @@
         ]
       },
       "post": {
+        "tags": [
+          "Cart"
+        ],
+        "summary": "Add a new cart item",
         "description": "",
         "parameters": [
           {
@@ -380,6 +386,94 @@
                 }
               }
             }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "Cart"
+        ],
+        "summary": "Delete all cart items",
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/cart/{id}": {
+      "patch": {
+        "tags": [
+          "Cart"
+        ],
+        "summary": "Update a cart item",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "Cart"
+        ],
+        "summary": "Delete a cart item",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
           }
         ],
         "responses": {

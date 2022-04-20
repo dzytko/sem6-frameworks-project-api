@@ -6,6 +6,7 @@ const joi = require("joi")
 authRouter.post("/", async (req, res) => {
     // #swagger.tags = ["Auth"]
     // #swagger.summary = "Login user"
+    // #swagger.parameters["body"] = {in: "body", schema: {email: "a@a.com", password: "any"}}
     try {
         const {error} = validate(req.body);
         if (error){
@@ -23,7 +24,7 @@ authRouter.post("/", async (req, res) => {
         }
 
         const jwt = user.generateAuthToken();
-        res.status(200).send({jwt: jwt, message: "Success"})
+        res.status(200).send({jwt: jwt})
     } catch (error) {
         res.status(500).send({message: "Internal server error"})
     }
