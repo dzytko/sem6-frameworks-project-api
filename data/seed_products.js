@@ -1,6 +1,5 @@
 const {Product} = require("../models/product");
 
-
 const productCount = 30;
 
 const discountedPercentage = 0.2;
