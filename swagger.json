@@ -73,6 +73,9 @@
           }
         ],
         "responses": {
+          "200": {
+            "description": "OK"
+          },
           "201": {
             "description": "Created"
           },
@@ -340,10 +343,10 @@
         }
       }
     },
-    "/api/cart/": {
+    "/api/cart-item/": {
       "get": {
         "tags": [
-          "Cart"
+          "CartItem"
         ],
         "summary": "Get all cart items",
         "description": "",
@@ -367,7 +370,7 @@
       },
       "post": {
         "tags": [
-          "Cart"
+          "CartItem"
         ],
         "summary": "Add a new cart item",
         "description": "",
@@ -389,11 +392,17 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "OK"
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
           },
           "401": {
             "description": "Unauthorized"
+          },
+          "409": {
+            "description": "Conflict"
           },
           "500": {
             "description": "Internal Server Error"
@@ -407,7 +416,7 @@
       },
       "delete": {
         "tags": [
-          "Cart"
+          "CartItem"
         ],
         "summary": "Delete all cart items",
         "description": "",
@@ -430,10 +439,10 @@
         ]
       }
     },
-    "/api/cart/{id}": {
+    "/api/cart-item/{id}": {
       "patch": {
         "tags": [
-          "Cart"
+          "CartItem"
         ],
         "summary": "Update a cart item",
         "description": "",
@@ -443,14 +452,38 @@
             "in": "path",
             "required": true,
             "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "productId": {
+                  "example": "any"
+                },
+                "quantity": {
+                  "example": "any"
+                }
+              }
+            }
           }
         ],
         "responses": {
           "200": {
             "description": "OK"
           },
+          "400": {
+            "description": "Bad Request"
+          },
           "401": {
             "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "409": {
+            "description": "Conflict"
           },
           "500": {
             "description": "Internal Server Error"
@@ -464,7 +497,7 @@
       },
       "delete": {
         "tags": [
-          "Cart"
+          "CartItem"
         ],
         "summary": "Delete a cart item",
         "description": "",
@@ -482,6 +515,144 @@
           },
           "401": {
             "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/order/": {
+      "get": {
+        "tags": [
+          "Order"
+        ],
+        "summary": "Get all orders",
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      },
+      "post": {
+        "tags": [
+          "Order"
+        ],
+        "summary": "Create order",
+        "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "orderItems": {
+                  "example": "any"
+                },
+                "orderDate": {
+                  "example": "any"
+                },
+                "totalAmount": {
+                  "example": "any"
+                },
+                "deliveryMethod": {
+                  "example": "any"
+                },
+                "paymentMethod": {
+                  "example": "any"
+                },
+                "firstName": {
+                  "example": "any"
+                },
+                "lastName": {
+                  "example": "any"
+                },
+                "email": {
+                  "example": "any"
+                },
+                "street": {
+                  "example": "any"
+                },
+                "postalCode": {
+                  "example": "any"
+                },
+                "city": {
+                  "example": "any"
+                },
+                "phoneNumber": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/api/order/{id}": {
+      "get": {
+        "tags": [
+          "Order"
+        ],
+        "summary": "Get order by id",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Not Found"
           },
           "500": {
             "description": "Internal Server Error"

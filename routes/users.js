@@ -20,30 +20,33 @@ router.get('/', authenticate, (req, res) => {
 router.post('/', async (req, res) => {
     // #swagger.tags = ["User"]
     // #swagger.summary = "Create new user"
-    try {
-        const {error} = validateUser(req.body)
-        if (error){
-            return res.status(400).send({message: error.details[0].message})
-        }
-
-        const user = await User.findOne({email: req.body.email})
-        if (user){
-            return res.status(409).send({message: "User with this email already exists"})
-        }
-
-        const salt = await bcrypt.genSalt(Number(process.env.SALT_ROUNDS))
-        const hashPassword = await bcrypt.hash(req.body.password, salt)
-        await new User({
-            firstName: req.body.firstName,
-            lastName: req.body.lastName,
-            email: req.body.email,
-            password: hashPassword}).save()
-
-        res.status(201).send({message: "User created"})
-    } catch (error) {
-        console.log(error)
-        res.status(500).send({message: "Internal server error"})
+    const {error} = validateUser(req.body)
+    if (error) {
+        return res.status(400).send({message: error.details[0].message})
     }
+
+    const user = await User.findOne({email: req.body.email})
+    if (user) {
+        return res.status(409).send({message: "User with this email already exists"})
+    }
+
+    const salt = await bcrypt.genSalt(Number(process.env.SALT_ROUNDS))
+    const hashPassword = await bcrypt.hash(req.body.password, salt)
+    await new User({
+        firstName: req.body.firstName,
+        lastName: req.body.lastName,
+        email: req.body.email,
+        password: hashPassword
+    }).save((err, user) => {
+        if (err) {
+            console.log(err)
+            res.status(500).send("Internal server error")
+            return
+        }
+        res.send(user)
+    })
+
+    res.status(201).send({message: "User created"})
 })
 
 router.delete('/:id', authenticate, (req, res) => {
@@ -53,9 +56,9 @@ router.delete('/:id', authenticate, (req, res) => {
         if (err) {
             console.log(err)
             res.status(500).send({message: "Internal server error"})
-        } else {
-            res.send(user)
+            return
         }
+        res.send(user)
     })
 });
 
