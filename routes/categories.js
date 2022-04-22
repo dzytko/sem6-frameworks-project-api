@@ -6,17 +6,21 @@ router.get('/', async (req, res) => {
     // #swagger.tags = ["Category"]
     // #swagger.summary = 'Get all categories optionally filtered by parent id'
     // #swagger.parameters['parent-id'] = {in: 'query'}
+
     let filters = {};
-    if (req.query['parent-id']) {
+    if (req.query['parent-id'] === 'null') {
+        filters = {parentId: null};
+    }
+    else if (req.query['parent-id']) {
         filters = {parentId: req.query['parent-id']};
     }
+
     Category.find({...filters}).sort('categoryName').exec((err, categories) => {
         if (err) {
             console.log(err)
-            res.status(500).send("Internal server error")
-            return
+            return res.status(500).send("Internal server error")
         }
-        res.send(categories)
+        return res.send(categories)
     })
 });
 
@@ -26,14 +30,12 @@ router.get('/:id', async (req, res) => {
     Category.findById(req.params.id, (err, category) => {
         if (err) {
             console.log(err)
-            res.status(500).send("Internal server error")
-            return
+            return res.status(500).send("Internal server error")
         }
         if (!category) {
-            res.status(404).send("Category not found")
-            return
+            return res.status(404).send("Category not found")
         }
-        res.send(category)
+        return res.send(category)
     })
 });
 
