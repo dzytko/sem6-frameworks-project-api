@@ -1,8 +1,10 @@
 require('dotenv').config()
-const express = require('express');
-const logger = require('morgan');
-const swaggerUi = require('swagger-ui-express');
-const swaggerDocument = require('./swagger.json');
+const express = require('express')
+const logger = require('morgan')
+const fs = require("fs");
+const path = require("path");
+const swaggerUi = require('swagger-ui-express')
+const swaggerDocument = require('./swagger.json')
 const connection = require('./database')
 const {seedDb} = require('./data/seeder')
 connection()
@@ -17,7 +19,20 @@ const app = express();
 
 if (process.env.NODE_ENV === 'development') {
     seedDb().then()
-    app.use('/doc', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+    const swaggerOptions = {
+        customCss: fs.readFileSync(path.join(__dirname, 'swaggerDark.css'), 'utf8'),
+        swaggerOptions: {
+            operationsSorter: (a, b) => {
+                const methodsOrder = ["get", "post", "put", "patch", "delete", "options", "trace"];
+                let result = methodsOrder.indexOf(a.get("method")) - methodsOrder.indexOf(b.get("method"));
+                if (result === 0) {
+                    result = a.get("path").localeCompare(b.get("path"));
+                }
+                return result;
+            }
+        }
+    }
+    app.use('/doc', swaggerUi.serve, swaggerUi.setup(swaggerDocument, swaggerOptions))
 }
 
 app.use(logger('dev'));
