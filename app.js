@@ -14,6 +14,7 @@ const authRouter = require('./routes/auth')
 const productsRouter = require('./routes/products')
 const categoryRouter = require('./routes/categories')
 const cartItemRouter = require('./routes/cart_items')
+const orderRouter = require('./routes/orders')
 const app = express()
 
 if (process.env.NODE_ENV === 'development') {
@@ -43,5 +44,6 @@ app.use('/api/auth', authRouter)
 app.use('/api/product', productsRouter)
 app.use('/api/category', categoryRouter)
 app.use('/api/cart-item', cartItemRouter)
+app.use('/api/order', orderRouter)
 
 module.exports = app
