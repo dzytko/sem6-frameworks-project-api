@@ -9,13 +9,12 @@ const connection = require('./database')
 const {seedDb} = require('./data/seeder')
 connection()
 
-const usersRouter = require('./routes/users');
-const authRouter = require('./routes/auth');
-const productsRouter = require('./routes/products');
-const categoryRouter = require('./routes/categories');
-const cartRouter = require('./routes/cart');
-
-const app = express();
+const usersRouter = require('./routes/users')
+const authRouter = require('./routes/auth')
+const productsRouter = require('./routes/products')
+const categoryRouter = require('./routes/categories')
+const cartItemRouter = require('./routes/cart_items')
+const app = express()
 
 if (process.env.NODE_ENV === 'development') {
     seedDb().then()
@@ -35,14 +34,14 @@ if (process.env.NODE_ENV === 'development') {
     app.use('/doc', swaggerUi.serve, swaggerUi.setup(swaggerDocument, swaggerOptions))
 }
 
-app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({extended: false}));
+app.use(logger('dev'))
+app.use(express.json())
+app.use(express.urlencoded({extended: false}))
 
-app.use('/api/user', usersRouter);
-app.use('/api/auth', authRouter);
-app.use('/api/product', productsRouter);
-app.use('/api/category', categoryRouter);
-app.use('/api/cart', cartRouter);
+app.use('/api/user', usersRouter)
+app.use('/api/auth', authRouter)
+app.use('/api/product', productsRouter)
+app.use('/api/category', categoryRouter)
+app.use('/api/cart-item', cartItemRouter)
 
-module.exports = app;
+module.exports = app
