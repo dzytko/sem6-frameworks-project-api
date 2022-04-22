@@ -7,6 +7,7 @@ async function seedUsers() {
     const anyHashed = await bcrypt.hash("any", salt)
 
     new User({
+            _id: "6261ace02e0cf1d3db5c5fad",
             firstName: "firstName",
             lastName: "lastName",
             email: "a@a.com",
@@ -14,6 +15,7 @@ async function seedUsers() {
         }
     ).save()
     new User({
+            _id: "6261ace02e0cf1d3db5c5fae",
             firstName: "another",
             lastName: "lastName",
             email: "another@another.com",
