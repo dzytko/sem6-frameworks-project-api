@@ -6,8 +6,8 @@ const {authenticate} = require('../middleware/authenticate')
 
 router.get('/', authenticate, (req, res) => {
     // #swagger.tags = ["User"]
-    // #swagger.summary = "Get all users"
-    User.find({}, (err, users) => {
+    // #swagger.summary = "Get current user"
+    User.findOne({_id: req.user._id}, (err, users) => {
         if (err) {
             console.log(err)
             res.status(500).send('Internal server error')

@@ -23,7 +23,7 @@
         "tags": [
           "User"
         ],
-        "summary": "Get all users",
+        "summary": "Get current user",
         "description": "",
         "parameters": [],
         "responses": {
