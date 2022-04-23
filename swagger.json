@@ -574,9 +574,6 @@
                 "orderDate": {
                   "example": "any"
                 },
-                "totalAmount": {
-                  "example": "any"
-                },
                 "deliveryMethod": {
                   "example": "any"
                 },

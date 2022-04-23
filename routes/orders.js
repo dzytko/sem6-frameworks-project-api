@@ -1,43 +1,43 @@
-const express = require("express");
+const express = require('express')
 const router = express.Router()
-const {authenticate} = require("../middleware/authenticate");
-const {Order, validateOrder} = require("../models/order")
-const {Product} = require("../models/product");
+const {authenticate} = require('../middleware/authenticate')
+const {Order, validateOrder} = require('../models/order')
+const {Product} = require('../models/product')
 
 router.use(authenticate)
 
-router.get("/", (req, res) => {
+router.get('/', (req, res) => {
     // #swagger.tags = ["Order"]
     // #swagger.summary = "Get all orders"
     Order.find({userId: req.user._id}, (err, orders) => {
         if (err) {
             console.log(err)
-            return res.status(500).send("Internal server error")
+            return res.status(500).send('Internal server error')
         }
         return res.send(orders)
     })
 })
 
-router.get("/:id", (req, res) => {
+router.get('/:id', (req, res) => {
     // #swagger.tags = ["Order"]
     // #swagger.summary = "Get order by id"
     Order.findOne({_id: req.params.id, userId: req.user._id}, (err, order) => {
         if (err) {
             console.log(err)
-            return res.status(500).send("Internal server error")
+            return res.status(500).send('Internal server error')
         }
         if (!order) {
-            return res.status(404).send("Order not found")
+            return res.status(404).send('Order not found')
         }
         return res.send(order)
     })
 })
 
-router.post("/", async (req, res) => {
+router.post('/', async (req, res) => {
     // #swagger.tags = ["Order"]
     // #swagger.summary = "Create order"
     if (!req.body.orderItems || !req.body.orderItems.length) {
-        return res.status(400).send("No items in order")
+        return res.status(400).send('No items in order')
     }
     const {error} = validateOrder(req.body)
     if (error) {
@@ -68,18 +68,18 @@ router.post("/", async (req, res) => {
         postalCode: req.body.postalCode,
         city: req.body.city,
         phoneNumber: req.body.phoneNumber,
-        orderItems: req.body.orderItems
+        orderItems: req.body.orderItems,
     })
 
     const order = await Order.findOne({userId: req.user._id, orderDate: req.body.orderDate})
     if (order) {
-        return res.status(400).send("Order already exists")
+        return res.status(400).send('Order already exists')
     }
 
     newOrder.save((err, order) => {
         if (err) {
             console.log(err)
-            return res.status(500).send("Internal server error")
+            return res.status(500).send('Internal server error')
         }
         return res.status(201).send(order)
     })

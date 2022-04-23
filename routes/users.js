@@ -1,8 +1,8 @@
-const express = require("express");
-const bcrypt = require("bcrypt")
+const express = require('express')
+const bcrypt = require('bcrypt')
 const router = express.Router()
-const {User, validateUser} = require("../models/user")
-const {authenticate} = require("../middleware/authenticate");
+const {User, validateUser} = require('../models/user')
+const {authenticate} = require('../middleware/authenticate')
 
 router.get('/', authenticate, (req, res) => {
     // #swagger.tags = ["User"]
@@ -10,12 +10,12 @@ router.get('/', authenticate, (req, res) => {
     User.find({}, (err, users) => {
         if (err) {
             console.log(err)
-            res.status(500).send("Internal server error")
+            res.status(500).send('Internal server error')
         } else {
             res.send(users)
         }
-    });
-});
+    })
+})
 
 router.post('/', async (req, res) => {
     // #swagger.tags = ["User"]
@@ -27,7 +27,7 @@ router.post('/', async (req, res) => {
 
     const user = await User.findOne({email: req.body.email})
     if (user) {
-        return res.status(409).send({message: "User with this email already exists"})
+        return res.status(409).send({message: 'User with this email already exists'})
     }
 
     const salt = await bcrypt.genSalt(Number(process.env.SALT_ROUNDS))
@@ -36,17 +36,17 @@ router.post('/', async (req, res) => {
         firstName: req.body.firstName,
         lastName: req.body.lastName,
         email: req.body.email,
-        password: hashPassword
+        password: hashPassword,
     }).save((err, user) => {
         if (err) {
             console.log(err)
-            res.status(500).send("Internal server error")
+            res.status(500).send('Internal server error')
             return
         }
         res.send(user)
     })
 
-    res.status(201).send({message: "User created"})
+    res.status(201).send({message: 'User created'})
 })
 
 router.delete('/:id', authenticate, (req, res) => {
@@ -55,11 +55,11 @@ router.delete('/:id', authenticate, (req, res) => {
     User.findByIdAndDelete(req.params.id, (err, user) => {
         if (err) {
             console.log(err)
-            res.status(500).send({message: "Internal server error"})
+            res.status(500).send({message: 'Internal server error'})
             return
         }
         res.send(user)
     })
-});
+})
 
 module.exports = router
