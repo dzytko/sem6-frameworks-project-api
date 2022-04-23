@@ -43,10 +43,8 @@ router.post('/', async (req, res) => {
             res.status(500).send('Internal server error')
             return
         }
-        res.send(user)
+        res.status(201).send({message: 'User created', user: user})
     })
-
-    res.status(201).send({message: 'User created'})
 })
 
 router.delete('/:id', authenticate, (req, res) => {
