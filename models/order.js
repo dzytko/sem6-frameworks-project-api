@@ -1,5 +1,5 @@
-const mongoose = require('mongoose');
-const joi = require("joi");
+const mongoose = require('mongoose')
+const joi = require('joi')
 
 const orderSchema = new mongoose.Schema({
     userId: {type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true},
@@ -16,9 +16,9 @@ const orderSchema = new mongoose.Schema({
     phoneNumber: {type: String, required: true},
     orderItems: [{
         productId: {type: mongoose.Schema.Types.ObjectId, ref: 'Product', required: true},
-        quantity: {type: Number, required: true}
-    }]
-});
+        quantity: {type: Number, required: true},
+    }],
+})
 
 const Order = mongoose.model('Order', orderSchema)
 
@@ -38,9 +38,9 @@ const validateOrder = (data) => {
         phoneNumber: joi.string().required().label('Phone Number'),
         orderItems: joi.array().items(joi.object({
             productId: joi.string().hex().length(24).required().label('Product Id'),
-            quantity: joi.number().greater(0).required().label('Quantity')
-        })).required().label('Order Items')
-    })
+            quantity: joi.number().greater(0).required().label('Quantity'),
+        })).required().label('Order Items'),
+    }).unknown(true)
     return schema.validate(data)
 }
 

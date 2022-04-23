@@ -24,7 +24,7 @@ const validateCartItem = (data) => {
     const schema = joi.object({
         productId: joi.string().hex().length(24).required().label('Product Id'),
         quantity: joi.number().greater(0).required().label('Quantity')
-    })
+    }).unknown(true)
     return schema.validate(data)
 }
 

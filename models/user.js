@@ -24,7 +24,7 @@ const validateUser = (data) => {
         lastName: joi.string().required().label("Last Name"),
         email: joi.string().required().email().label("Email"),
         password: passwordComplexity().required().label("Password"),
-    })
+    }).unknown(true)
     return schema.validate(data)
 }
 
