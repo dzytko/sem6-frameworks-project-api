@@ -1,6 +1,7 @@
 require('dotenv').config()
 const express = require('express')
 const logger = require('morgan')
+const cors = require('cors')
 const fs = require("fs");
 const path = require("path");
 const swaggerUi = require('swagger-ui-express')
@@ -35,6 +36,7 @@ if (process.env.NODE_ENV === 'development') {
     app.use('/doc', swaggerUi.serve, swaggerUi.setup(swaggerDocument, swaggerOptions))
 }
 
+app.use(cors())
 app.use(logger('dev'))
 app.use(express.json())
 app.use(express.urlencoded({extended: false}))
