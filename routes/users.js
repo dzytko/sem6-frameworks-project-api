@@ -109,9 +109,21 @@ router.patch('/', authenticate, async (req, res) => {
     })
 })
 
-router.delete('/', authenticate, (req, res) => {
+router.delete('/', authenticate, async (req, res) => {
     // #swagger.tags = ["User"]
     // #swagger.summary = "Delete current user"
+    if (!req.body.password) {
+        return res.status(400).send({message: "Password not provided"})
+    }
+    const user = await User.findOne({_id: req.user._id})
+    if (!user) {
+        return res.status(404).send('User not found')
+    }
+    const validPassword = await bcrypt.compare(req.body.password, user.password)
+    if (!validPassword) {
+        return res.status(400).send({message: 'Invalid password'})
+    }
+
     User.findByIdAndDelete(req.user._id, (err, user) => {
         if (err) {
             console.log(err)
