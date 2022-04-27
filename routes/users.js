@@ -111,8 +111,8 @@ router.patch('/', authenticate, async (req, res) => {
 
 router.delete('/', authenticate, (req, res) => {
     // #swagger.tags = ["User"]
-    // #swagger.summary = "Delete user"
-    User.findByIdAndDelete(req.params.id, (err, user) => {
+    // #swagger.summary = "Delete current user"
+    User.findByIdAndDelete(req.user._id, (err, user) => {
         if (err) {
             console.log(err)
             res.status(500).send({message: 'Internal server error'})
