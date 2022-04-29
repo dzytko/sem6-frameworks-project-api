@@ -35,7 +35,7 @@ router.post('/', async (req, res) => {
 
     const cartItem = await CartItem.findOne({userId: req.user._id, productId: req.body.productId})
     if (cartItem) {
-        res.status(409).send('Product already in cart')
+        res.status(409).send({message: 'Product already in cart', cartItem: cartItem})
         return
     }
 
