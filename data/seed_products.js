@@ -1,4 +1,5 @@
 const {Product} = require("../models/product");
+const {Category} = require('../models/category')
 
 const productCount = 30;
 
@@ -12,12 +13,14 @@ async function seedProducts() {
     await Product.deleteMany({});
     const products = []
 
+    const categories = await Category.find({});
+
     for (let i = 1; i <= productCount; i++) {
         const price = Math.floor((Math.random() * (priceMax - priceMin + 1) + priceMin) * 100) / 100;
         const discount = Math.random() * 0.5 + 0.1;
         products.push({
             productName: `Product ${i}`,
-            categoryId: null,
+            categoryId: categories[Math.floor(Math.random() * categories.length)]._id,
             unitPrice: price,
             isDiscounted: Math.random() < discountedPercentage,
             isDiscontinued: Math.random() < discontinuedPercentage,

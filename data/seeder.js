@@ -6,8 +6,8 @@ const {seedOrders} = require("./seed_orders");
 
 async function seedDb() {
     await seedUsers()
-    await seedProducts()
     await seedCategories()
+    await seedProducts()
     await seedCartItems()
     await seedOrders()
 }
