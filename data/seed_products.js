@@ -26,7 +26,7 @@ async function seedProducts() {
             isDiscontinued: Math.random() < discontinuedPercentage,
             discountedUnitPrice: Math.floor(price * (1 - discount) * 100) / 100,
             properties: {prop1: `prop1 ${i}`, prop2: `prop2 ${i}`},
-            imagePath: `/images/product${i}.jpg`,
+            imagePath: `product${i}.jpg`,
             quantity: Math.floor(Math.random() * 100) + 1
         });
     }
