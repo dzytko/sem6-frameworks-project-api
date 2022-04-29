@@ -16,6 +16,7 @@ const productsRouter = require('./routes/products')
 const categoryRouter = require('./routes/categories')
 const cartItemRouter = require('./routes/cart_items')
 const orderRouter = require('./routes/orders')
+const resourceRouter = require('./routes/resources')
 const app = express()
 
 if (process.env.NODE_ENV === 'development') {
@@ -47,5 +48,6 @@ app.use('/api/product', productsRouter)
 app.use('/api/category', categoryRouter)
 app.use('/api/cart-item', cartItemRouter)
 app.use('/api/order', orderRouter)
+app.use('/api/resource', resourceRouter)
 
 module.exports = app

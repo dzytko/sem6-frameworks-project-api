@@ -723,6 +723,31 @@
           }
         ]
       }
+    },
+    "/api/resource/image/{name}": {
+      "get": {
+        "tags": [
+          "Resource"
+        ],
+        "summary": "Get image by name",
+        "description": "",
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "404": {
+            "description": "Not Found"
+          }
+        }
+      }
     }
   }
 }
