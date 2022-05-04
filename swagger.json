@@ -234,11 +234,36 @@
           "Product"
         ],
         "summary": "Get all products",
-        "description": "",
-        "parameters": [],
+        "description": "Get all products in range passed by range header (both sides inclusive), sorted by sort-by query param, ordered by order-by param",
+        "parameters": [
+          {
+            "name": "range",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "sort-by",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "order-by",
+            "in": "query",
+            "type": "string"
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "206": {
+            "description": "Partial Content"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "416": {
+            "description": "Range Not Satisfiable"
           },
           "500": {
             "description": "Internal Server Error"
