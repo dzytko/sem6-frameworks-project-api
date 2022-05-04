@@ -3,7 +3,6 @@ const router = express.Router()
 const {Product} = require('../models/product')
 const {authenticate} = require('../middleware/authenticate')
 
-// TODO: test the shit out of this router
 
 router.get('/', (req, res) => {
     // #swagger.tags = ["Product"]
