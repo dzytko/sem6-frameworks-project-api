@@ -37,7 +37,9 @@ if (process.env.NODE_ENV === 'development') {
     app.use('/doc', swaggerUi.serve, swaggerUi.setup(swaggerDocument, swaggerOptions))
 }
 
-app.use(cors())
+app.use(cors({
+    exposedHeaders: ['Content-Range'],
+}))
 app.use(logger('dev'))
 app.use(express.json())
 app.use(express.urlencoded({extended: false}))
