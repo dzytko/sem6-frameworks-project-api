@@ -234,7 +234,7 @@
           "Product"
         ],
         "summary": "Get all products",
-        "description": "Get all products in range passed by range header (both sides inclusive), sorted by sort-by query param, ordered by order-by param",
+        "description": "Get all products belonging to category-id query param in range passed by range header (both sides inclusive), sorted by sort-by query param, ordered by order-by param",
         "parameters": [
           {
             "name": "range",
@@ -248,6 +248,11 @@
           },
           {
             "name": "order-by",
+            "in": "query",
+            "type": "string"
+          },
+          {
+            "name": "category-id",
             "in": "query",
             "type": "string"
           }

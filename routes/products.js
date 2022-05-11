@@ -4,39 +4,63 @@ const {Product} = require('../models/product')
 const {authenticate} = require('../middleware/authenticate')
 const parseRange = require('range-parser')
 
-router.get('/', (req, res) => {
+router.get('/', async (req, res) => {
     // #swagger.tags = ["Product"]
     // #swagger.summary = "Get all products"
     // #swagger.parameters['sort-by'] = {in: 'query'}
     // #swagger.parameters['order-by'] = {in: 'query'}
-    // #swagger.description = "Get all products in range passed by range header (both sides inclusive), sorted by sort-by query param, ordered by order-by param"
-    // #swagger.response.206.description = "Partial content"
-    const sortBy = req.query['sort-by'] ?? 'productId'
+    // #swagger.parameters['category-id'] = {in: 'query'}
+    // #swagger.description = "Get all products belonging to category-id query param in range passed by range header (both sides inclusive), sorted by sort-by query param, ordered by order-by param"
+    const sortBy = req.query['sort-by'] ?? 'productName'
     const sortOrder = req.query['sort-order'] ?? 'asc'
+    const categoryId = req.query['category-id']
 
-    Product.find({}).sort({sortBy: sortOrder}).exec((err, products) => {
-        if (err) {
-            console.log(err)
-            return res.status(500).send('Internal server error')
-        }
+    let filters = {isDiscontinued: false}
 
-        let range = parseRange(products.length, req.headers.range ?? '')
-        if (req.headers.range && range === -1) {
-            return res.status(416).send('Range not satisfiable')
-        }
-        else if (req.headers.range && range === -2) {
-            return res.status(400).send('Malformed range header string')
-        }
+    if (categoryId) {
+        filters['categoryId'] = categoryId
+    }
 
-        if (range < 0) {
-            range = [{start: 0, end: products.length - 1}]
-        }
+    const totalProducts = await Product.countDocuments({...filters}).exec()
+    let range = parseRange(totalProducts, req.headers.range ?? '')
+    if (!req.headers.range) {
+        range = [{start: 0, end: totalProducts - 1}]
+    }
+    else if (range === -1) {
+        return res.status(416).send('Range not satisfiable')
+    }
+    else if (range === -2) {
+        return res.status(400).send('Malformed range header string')
+    }
 
-        const productsToSend = products.slice(range[0].start, range[0].end + 1)
+    Product
+        .find({...filters})
+        .skip(range[0].start)
+        .limit(range[0].end - range[0].start + 1)
+        .sort({sortBy: sortOrder})
+        .exec((err, products) => {
+            if (err) {
+                console.log(err)
+                return res.status(500).send('Internal server error')
+            }
 
-        res.set('Content-Range', `products ${range[0].start}-${range[0].start + productsToSend.length - 1}/${products.length}`)
-        res.status(productsToSend.length === products.length ? 200 : 206).send(productsToSend)
-    })
+            if (sortBy === 'price') {
+                products.sort((left, right) => {
+                    const leftPrice = left.isDiscounted ? left.discountedUnitPrice : left.unitPrice
+                    const rightPrice = right.isDiscounted ? right.discountedUnitPrice : right.unitPrice
+                    if (sortOrder === 'asc') {
+                        return leftPrice - rightPrice
+                    }
+                    else {
+                        return rightPrice - leftPrice
+                    }
+                })
+            }
+
+
+            res.set('Content-Range', `products=${range[0].start}-${range[0].end}/${totalProducts}`)
+            res.status(totalProducts === products.length ? 200 : 206).send(products)
+        })
 })
 
 router.get('/:id', (req, res) => {
