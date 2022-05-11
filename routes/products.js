@@ -33,34 +33,41 @@ router.get('/', async (req, res) => {
         return res.status(400).send('Malformed range header string')
     }
 
-    Product
-        .find({...filters})
-        .skip(range[0].start)
-        .limit(range[0].end - range[0].start + 1)
-        .sort({sortBy: sortOrder})
-        .exec((err, products) => {
-            if (err) {
-                console.log(err)
-                return res.status(500).send('Internal server error')
-            }
 
-            if (sortBy === 'price') {
-                products.sort((left, right) => {
-                    const leftPrice = left.isDiscounted ? left.discountedUnitPrice : left.unitPrice
-                    const rightPrice = right.isDiscounted ? right.discountedUnitPrice : right.unitPrice
-                    if (sortOrder === 'asc') {
-                        return leftPrice - rightPrice
-                    }
-                    else {
-                        return rightPrice - leftPrice
-                    }
-                })
-            }
+    Product.find({...filters}).exec((err, products) => {
+        if (err) {
+            console.log(err)
+            return res.status(500).send('Internal server error')
+        }
 
+        if (sortBy === 'price') {
+            products.sort((left, right) => {
+                const leftPrice = left.isDiscounted ? left.discountedUnitPrice : left.unitPrice
+                const rightPrice = right.isDiscounted ? right.discountedUnitPrice : right.unitPrice
+                if (sortOrder === 'asc') {
+                    return leftPrice - rightPrice
+                }
+                else {
+                    return rightPrice - leftPrice
+                }
+            })
+        }
+        else if (sortBy === 'productName') {
+            products.sort((left, right) => {
+                if (sortOrder === 'asc') {
+                    return left.productName.localeCompare(right.productName)
+                }
+                else {
+                    return right.productName.localeCompare(left.productName)
+                }
+            })
+        }
 
-            res.set('Content-Range', `products=${range[0].start}-${range[0].end}/${totalProducts}`)
-            res.status(totalProducts === products.length ? 200 : 206).send(products)
-        })
+        products = products.slice(range[0].start, range[0].end + 1)
+
+        res.set('Content-Range', `products=${range[0].start}-${range[0].end}/${totalProducts}`)
+        res.status(totalProducts === products.length ? 200 : 206).send(products)
+    })
 })
 
 router.get('/:id', (req, res) => {
