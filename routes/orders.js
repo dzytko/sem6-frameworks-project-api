@@ -52,6 +52,9 @@ router.post('/', async (req, res) => {
         if (product.quantity < orderItem.quantity) {
             return res.status(400).send(`Not enough products with id ${orderItem.productId}`)
         }
+        if (product.isDiscontinued) {
+            return res.status(400).send(`Product with id ${orderItem.productId} is discontinued`)
+        }
         totalAmount += orderItem.quantity * product.unitPrice
     }
 
