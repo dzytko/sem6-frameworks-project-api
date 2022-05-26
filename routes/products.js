@@ -10,15 +10,21 @@ router.get('/', async (req, res) => {
     // #swagger.parameters['sort-by'] = {in: 'query'}
     // #swagger.parameters['order-by'] = {in: 'query'}
     // #swagger.parameters['category-id'] = {in: 'query'}
-    // #swagger.description = "Get all products belonging to category-id query param in range passed by range header (both sides inclusive), sorted by sort-by query param, ordered by order-by param"
+    // #swagger.parameters['search'] = {in: 'query'}
+    // #swagger.description = "Get all products matching search param belonging to category-id query param in range passed by range header (both sides inclusive), sorted by sort-by query param, ordered by order-by param"
     const sortBy = req.query['sort-by'] ?? 'productName'
     const sortOrder = req.query['sort-order'] ?? 'asc'
     const categoryId = req.query['category-id']
+    const search = req.query['search']
 
     let filters = {isDiscontinued: false}
 
     if (categoryId) {
         filters['categoryId'] = categoryId
+    }
+
+    if (search) {
+        filters['productName'] = {$regex: '.*' + search + '.*' }
     }
 
     const totalProducts = await Product.countDocuments({...filters}).exec()
